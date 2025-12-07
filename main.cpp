@@ -22,6 +22,8 @@ void printMenu(const vector<string>& menu, int selected) {
 |  $$$$$$//$$| $$  | $$ /$$| $$  | $$ /$$|  $$$$$$/
  \______/|__/|__/  |__/|__/|__/  |__/|__/ \______/
 
+Created by Varagan77 > https://github.com/Varagan77
+
 )" << '\n';
 
     // now we loop through all menu options
@@ -39,11 +41,11 @@ int main() {
 
     // options to choose from
     vector<string> menuItems = {
-        "option 1",
-        "option 2",
-        "option 3",
-        "option 4",
-        "option 5"
+        "START",
+        "OPTIONS",
+        "MANUAL",
+        "INFO",
+        "EXIT"
     };
 
     int selected = 0;
