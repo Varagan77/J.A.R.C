@@ -1,6 +1,8 @@
 #include <conio.h>
 #include <iostream>
 #include <vector>
+#include <fstream>
+#include <string>
 
 using namespace std;
 
@@ -71,12 +73,24 @@ void settingsMenu() {
 // ─────────────────────────────────────────────
 void manualMenu() {
     system("cls");
-    cout << "===== MANUAL =====\n";
-    cout << "jarc time <region>   - prints the time\n";
-    cout << "(More command docs soon)\n\n";
+
+    ifstream file;
+    string line;
+
+    file.open("man.md");
+
+    if (file.is_open()) {
+        while (getline(file, line)) {
+            cout << line << endl;
+        }
+        file.close();
+    } else {
+        cout << "Error: Could not open manual\n";
+    }
+
+    cout << "\n";
     system("pause");
 }
-
 
 // ─────────────────────────────────────────────
 // INFO SECTION
