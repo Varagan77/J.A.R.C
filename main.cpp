@@ -3,7 +3,11 @@
 #include <vector>
 #include <fstream>
 #include <string>
-
+//-----------------
+// HEADER FUNCTIONS
+//-----------------
+#include "fns_note.h"
+//------------------
 using namespace std;
 
 #define KEY_UP    72
@@ -34,28 +38,61 @@ void printMenu(const vector<string>& menu, int selected) {
         else              cout << "   " << menu[i] << '\n';
 }
 
-
 // ─────────────────────────────────────────────
-// START SECTION — where commands are run
+// START
 // ─────────────────────────────────────────────
 void startPrompt() {
-    system("cls");
-    cout << "Enter command (example: jarc time london)\n";
-    cout << "Type 'back' to return.\n\n";
-
     string input;
-    while(true) {
+    string lastMessage; // to store feedback from previous command
+
+    while (true) {
+        system("cls"); // clear console
+        cout << "Enter command\n";
+        cout << "Type 'back' to return.\n\n";
+
+        if(!lastMessage.empty()) {
+            cout << lastMessage << "\n\n";
+            lastMessage.clear(); // reset after displaying
+        }
+
         cout << "> ";
         getline(cin, input);
 
         if(input == "back") break;
 
-        // Example command handling
-        if(input == "jarc time london") cout << "London time is X:XX\n";
-        else cout << "Unknown command.\n";
+        // ─────────────────────────────────────────────
+        // NOTE COMMANDS
+        // ─────────────────────────────────────────────
+        if (input.rfind("jarc note add ", 0) == 0) {
+            string name = input.substr(14); // after "jarc note add "
+            if (name.empty()) {
+                lastMessage = "Error: Note name required.";
+            } else {
+                noteAdd(name);
+                lastMessage = "Note '" + name + "' has been created.";
+            }
+        }
+        else if (input == "jarc note list") {
+            system("cls");
+            noteList();
+            cout << "\nPress Enter to continue...";
+            cin.ignore(); // wait for user
+            continue;     // skip clearing message
+        }
+        else if (input.rfind("jarc note remove ", 0) == 0) {
+            string name = input.substr(17); // after "jarc note remove "
+            if (name.empty()) {
+                lastMessage = "Error: Note name required.";
+            } else {
+                noteRemove(name);
+                lastMessage = "Note '" + name + "' has been removed.";
+            }
+        }
+        else {
+            lastMessage = "Unknown command.";
+        }
     }
 }
-
 
 // ─────────────────────────────────────────────
 // OPTIONS SECTION — colour/theme later
@@ -66,7 +103,6 @@ void settingsMenu() {
     cout << "(Not implemented yet)\n";
     system("pause");
 }
-
 
 // ─────────────────────────────────────────────
 // MANUAL SECTION — documentation
@@ -101,7 +137,6 @@ void infoMenu() {
     cout << "Use START to input commands.\n\n";
     system("pause");
 }
-
 
 // ─────────────────────────────────────────────
 // MAIN LOOP
